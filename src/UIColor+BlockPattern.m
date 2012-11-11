@@ -57,6 +57,8 @@ void drawPatternUsingBlockRelease(void *info)
     CGRect patternRect = CGRectZero;
     patternRect.size = size;
 
+    // with arc on or off we are taking ownership
+    // of this block, it will be released in the releaseInfo callback
 #if __has_feature(objc_arc)
     infoBlock = (void *)CFBridgingRetain(drawBlock);
 #else
