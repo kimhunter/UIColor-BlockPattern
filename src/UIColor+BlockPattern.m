@@ -17,7 +17,7 @@ void drawPatternUsingBlock(void *info, CGContextRef c)
 #else
     drawBlock = (void (^)(CGContextRef))(info);
 #endif
-
+    
     if (drawBlock != NULL)
     {
         drawBlock(c);
@@ -50,13 +50,13 @@ void drawPatternUsingBlockRelease(void *info)
 {
     void *infoBlock = NULL;
     CGPatternCallbacks patternCallbacks;
-	patternCallbacks.version = 0;
-	patternCallbacks.drawPattern = drawPatternUsingBlock;
-	patternCallbacks.releaseInfo = drawPatternUsingBlockRelease;
+    patternCallbacks.version = 0;
+    patternCallbacks.drawPattern = drawPatternUsingBlock;
+    patternCallbacks.releaseInfo = drawPatternUsingBlockRelease;
     
     CGRect patternRect = CGRectZero;
     patternRect.size = size;
-
+    
     // with arc on or off we are taking ownership
     // of this block, it will be released in the releaseInfo callback
 #if __has_feature(objc_arc)
@@ -65,16 +65,16 @@ void drawPatternUsingBlockRelease(void *info)
     infoBlock = (void *)CFRetain(drawBlock);
 #endif
     
- 	CGPatternRef pattern = CGPatternCreate(infoBlock, patternRect, CGAffineTransformIdentity, stepSize.width, stepSize.height, tileMethod, true, &patternCallbacks);
-	CGColorSpaceRef patternColorSpace = CGColorSpaceCreatePattern(NULL);
-	CGColorRef patColor = CGColorCreateWithPattern(patternColorSpace, pattern, (CGFloat []){1.0});
+    CGPatternRef pattern = CGPatternCreate(infoBlock, patternRect, CGAffineTransformIdentity, stepSize.width, stepSize.height, tileMethod, true, &patternCallbacks);
+    CGColorSpaceRef patternColorSpace = CGColorSpaceCreatePattern(NULL);
+    CGColorRef patColor = CGColorCreateWithPattern(patternColorSpace, pattern, (CGFloat []){1.0});
     
     UIColor *result = [UIColor colorWithCGColor:patColor];
     
     CGColorRelease(patColor);
     CGColorSpaceRelease(patternColorSpace);
     CGPatternRelease(pattern);
-
+    
     return result;
 }
 
