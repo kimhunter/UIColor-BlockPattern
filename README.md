@@ -25,3 +25,31 @@ Simply you could just copy the class in /src into your project. Or if you use ki
 Example Code
 ---------------------
 In the example project see MasterViewController.m setBackgroundForCellSelectionText for a couple of examples of how to test.
+
+
+Tips
+----
+
+In a non arc environment where you want to define a variable outside the block remember
+to copy and autorelease the block in the current scope. Like below would crash with an obscure warning, 
+
+```objc
+// don't do it like this
+CGRect patternBounds = CGRectMake(0.0, 0.0, 20.0, 20.0);
+backgroundColor = [UIColor colorPatternWithSize:patternBounds.size andDrawingBlock:^(CGContextRef c) {
+    CGContextSetFillColorWithColor(c, [[UIColor redColor] CGColor]);
+    CGContextFillEllipseInRect(c, patternBounds);
+}];
+
+```
+
+So add a copy + autorelease to make sure your local variables have the correct references. like so
+```objc
+// do it like this
+CGRect patternBounds = CGRectMake(0.0, 0.0, 20.0, 20.0);
+backgroundColor = [UIColor colorPatternWithSize:patternBounds.size andDrawingBlock:[[^(CGContextRef c) {
+    CGContextSetFillColorWithColor(c, [[UIColor redColor] CGColor]);
+    CGContextFillEllipseInRect(c, patternBounds);
+} copy] autorelease]];
+
+```
