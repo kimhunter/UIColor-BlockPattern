@@ -1,5 +1,5 @@
 //
-//  UIColor+KMBackgroundPattern.m
+//  UIColor+BlockPattern.m
 //  BackgroundPatternExample
 //
 //  Created by Kim Hunter on 11/11/12.
