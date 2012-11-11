@@ -19,7 +19,7 @@
 {
     [super viewDidLoad];
     
-    CGRect pattBound = CGRectMake(0.0, 0.0, 30.0, 30.0);
+    CGRect pattBound = CGRectMake(0.0, 0.0, 40.0, 40.0);
     self.view.backgroundColor = [UIColor colorPatternWithSize:pattBound.size andDrawingBlock:[[^(CGContextRef c) {
 
         CGContextSetFillColorWithColor(c, [[UIColor whiteColor] CGColor]);
