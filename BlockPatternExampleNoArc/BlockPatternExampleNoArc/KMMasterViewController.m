@@ -112,15 +112,16 @@
     
     if ([selectedText isEqualToString:BG_RedCheck])
     {
-        backgroundColor = [UIColor colorPatternWithSize:CGSizeMake(20.0, 20.0) andDrawingBlock:^(CGContextRef c) {
-            CGRect patternFrame = CGRectMake(0.0, 0.0, 20.0, 20.0);
+        CGRect patternFrame = CGRectMake(0.0, 0.0, 20.0, 20.0);
+
+        backgroundColor = [UIColor colorPatternWithSize:patternFrame.size andDrawingBlock:[[^(CGContextRef c) {
             CGContextSetFillColorWithColor(c, [[UIColor whiteColor] CGColor]);
             CGContextFillRect(c, patternFrame);
             CGContextSetFillColorWithColor(c, [[UIColor redColor] CGColor]);
             CGRect checkFrame = CGRectApplyAffineTransform(patternFrame, CGAffineTransformMakeScale(0.5, 0.5));
             CGContextFillRect(c, checkFrame);
             CGContextFillRect(c, CGRectApplyAffineTransform(checkFrame, CGAffineTransformMakeTranslation(CGRectGetWidth(checkFrame), CGRectGetHeight(checkFrame))));
-        }];
+        } copy] autorelease]];
     }
     else if([selectedText isEqualToString:BG_RedCircles])
     {
