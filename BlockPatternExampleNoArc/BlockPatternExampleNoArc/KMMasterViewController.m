@@ -1,13 +1,14 @@
 //
-//  MasterViewController.m
-//  BlockPatternExample
+//  KMMasterViewController.m
+//  BlockPatternExampleNoArc
 //
 //  Created by Kim Hunter on 11/11/12.
 //  Copyright (c) 2012 Kim Hunter. All rights reserved.
 //
 
-#import "MasterViewController.h"
-#import "DetailViewController.h"
+#import "KMMasterViewController.h"
+
+#import "KMDetailViewController.h"
 #import "UIColor+BlockPattern.h"
 
 #define BG_RedCheck             @"Red Checkers"
@@ -15,12 +16,14 @@
 #define BG_VerticalStripes      @"Vertical Stripes"
 #define ObjectsArray            @[BG_RedCheck, BG_RedCircles, BG_VerticalStripes]
 
-@interface MasterViewController () {
+
+
+@interface KMMasterViewController () {
     NSArray *_objects;
 }
 @end
 
-@implementation MasterViewController
+@implementation KMMasterViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -31,11 +34,18 @@
             self.clearsSelectionOnViewWillAppear = NO;
             self.contentSizeForViewInPopover = CGSizeMake(320.0, 600.0);
         }
-        _objects = ObjectsArray;
+        _objects = [ObjectsArray retain];
     }
     return self;
 }
 							
+- (void)dealloc
+{
+    [_detailViewController release];
+    [_objects release];
+    [super dealloc];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -46,7 +56,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 
 #pragma mark - Table View
 
@@ -67,14 +76,14 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
         if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     }
 
 
-    NSDate *object = _objects[indexPath.row];
+    NSString *object = _objects[indexPath.row];
     cell.textLabel.text = [object description];
     return cell;
 }
@@ -83,39 +92,34 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *object = _objects[indexPath.row];
-
-
-    
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
 	    if (!self.detailViewController) {
-	        self.detailViewController = [[DetailViewController alloc] initWithNibName:@"DetailViewController_iPhone" bundle:nil];
+	        self.detailViewController = [[[KMDetailViewController alloc] initWithNibName:@"KMDetailViewController_iPhone" bundle:nil] autorelease];
 	    }
 	    self.detailViewController.detailItem = object;
         [self.navigationController pushViewController:self.detailViewController animated:YES];
     } else {
         self.detailViewController.detailItem = object;
     }
-    
-    NSString *selectedText = [_objects objectAtIndex:indexPath.row];
-    [self setBackgroundForCellSelectionText:selectedText];
+    [self setBackgroundForCellSelectionText:object];
 }
 
 #pragma mark - HOW TO USE BlockPattern Extension
 
 - (void)setBackgroundForCellSelectionText:(NSString *)selectedText
 {
-    UIColor *backgroundColor = [UIColor whiteColor];
+    UIColor *backgroundColor = [UIColor grayColor];
     
     if ([selectedText isEqualToString:BG_RedCheck])
     {
-        CGRect patternFrame = CGRectMake(0.0, 0.0, 20.0, 20.0);
-        backgroundColor = [UIColor colorPatternWithSize:patternFrame.size andDrawingBlock:^(CGContextRef c) {
-            CGContextSetFillColorWithColor(c, [[UIColor whiteColor] CGColor]);
+        __block CGRect patternFrame = CGRectMake(0.0, 0.0, 20.0, 20.0);
+        backgroundColor = [UIColor colorPatternWithSize:CGSizeMake(20.0, 20.0) andDrawingBlock:^(CGContextRef c) {
+            CGContextSetFillColorWithColor(c, [[UIColor blueColor] CGColor]);
             CGContextFillRect(c, patternFrame);
-            CGContextSetFillColorWithColor(c, [[UIColor redColor] CGColor]);
-            CGRect checkFrame = CGRectApplyAffineTransform(patternFrame, CGAffineTransformMakeScale(0.5, 0.5));
-            CGContextFillRect(c, checkFrame);
-            CGContextFillRect(c, CGRectApplyAffineTransform(checkFrame, CGAffineTransformMakeTranslation(CGRectGetWidth(checkFrame), CGRectGetHeight(checkFrame))));
+//            CGContextSetFillColorWithColor(c, [[UIColor redColor] CGColor]);
+//            CGRect checkFrame = CGRectApplyAffineTransform(patternFrame, CGAffineTransformMakeScale(0.5, 0.5));
+//            CGContextFillRect(c, checkFrame);
+//            CGContextFillRect(c, CGRectApplyAffineTransform(checkFrame, CGAffineTransformMakeTranslation(CGRectGetWidth(checkFrame), CGRectGetHeight(checkFrame))));
         }];
     }
     else if([selectedText isEqualToString:BG_RedCircles])
@@ -136,7 +140,8 @@
     }
     
     self.detailViewController.view.backgroundColor = backgroundColor;
-
+    
 }
+
 
 @end
