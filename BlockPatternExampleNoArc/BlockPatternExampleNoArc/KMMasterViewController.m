@@ -112,14 +112,14 @@
     
     if ([selectedText isEqualToString:BG_RedCheck])
     {
-        __block CGRect patternFrame = CGRectMake(0.0, 0.0, 20.0, 20.0);
         backgroundColor = [UIColor colorPatternWithSize:CGSizeMake(20.0, 20.0) andDrawingBlock:^(CGContextRef c) {
-            CGContextSetFillColorWithColor(c, [[UIColor blueColor] CGColor]);
+            CGRect patternFrame = CGRectMake(0.0, 0.0, 20.0, 20.0);
+            CGContextSetFillColorWithColor(c, [[UIColor whiteColor] CGColor]);
             CGContextFillRect(c, patternFrame);
-//            CGContextSetFillColorWithColor(c, [[UIColor redColor] CGColor]);
-//            CGRect checkFrame = CGRectApplyAffineTransform(patternFrame, CGAffineTransformMakeScale(0.5, 0.5));
-//            CGContextFillRect(c, checkFrame);
-//            CGContextFillRect(c, CGRectApplyAffineTransform(checkFrame, CGAffineTransformMakeTranslation(CGRectGetWidth(checkFrame), CGRectGetHeight(checkFrame))));
+            CGContextSetFillColorWithColor(c, [[UIColor redColor] CGColor]);
+            CGRect checkFrame = CGRectApplyAffineTransform(patternFrame, CGAffineTransformMakeScale(0.5, 0.5));
+            CGContextFillRect(c, checkFrame);
+            CGContextFillRect(c, CGRectApplyAffineTransform(checkFrame, CGAffineTransformMakeTranslation(CGRectGetWidth(checkFrame), CGRectGetHeight(checkFrame))));
         }];
     }
     else if([selectedText isEqualToString:BG_RedCircles])
