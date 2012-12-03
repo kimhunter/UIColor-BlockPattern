@@ -32,7 +32,7 @@
         @param drawBlock block taking a context to draw in
         @return color based on pattern
     */
-+ (UIColor *)colorPatternWithSize:(CGSize)size andDrawingBlock:(void (^)(CGContextRef c))drawBlock;
++ (UIColor *)colorPatternWithSize:(CGSize)size andDrawingBlock:(void (^)(CGRect bounds, CGContextRef c))drawBlock;
 
     /** Create a pattern bassed color
 
@@ -44,6 +44,6 @@
 + (UIColor *)colorPatternWithSize:(CGSize)size
                          stepSize:(CGSize)stepSize
                      tilingMethod:(CGPatternTiling)tileMethod
-                  andDrawingBlock:(void (^)(CGContextRef c))drawBlock;
+                  andDrawingBlock:(void (^)(CGRect bounds, CGContextRef c))drawBlock;
 
 @end
