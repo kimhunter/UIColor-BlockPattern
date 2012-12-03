@@ -50,7 +50,7 @@ void drawPatternUsingBlockRelease(void *info)
 }
 
 
-@implementation UIColor (KMBackgroundPattern)
+@implementation UIColor (BlockPattern)
 
 + (UIColor *)colorPatternWithSize:(CGSize)size andDrawingBlock:(void (^)(CGContextRef c))drawBlock
 {
