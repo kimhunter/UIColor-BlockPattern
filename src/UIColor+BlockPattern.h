@@ -29,21 +29,21 @@
     /** Create a pattern bassed color with basic options
 
         @param size Size of pattern tile
-        @param drawBlock block taking a context to draw in
+        @param drawBlock block taking a bounds and context to draw in
         @return color based on pattern
     */
-+ (UIColor *)colorPatternWithSize:(CGSize)size andDrawingBlock:(void (^)(CGContextRef c))drawBlock;
++ (UIColor *)colorPatternWithSize:(CGSize)size andDrawingBlock:(void (^)(CGRect bounds, CGContextRef c))drawBlock;
 
     /** Create a pattern bassed color
 
         @param size size of pattern tile
         @param stepSize displacement between tiles
         @param tilingMethod tiling distortion method
-        @param drawBlock block taking a context to draw in
+        @param drawBlock block taking a bounds and context to draw in
     */
 + (UIColor *)colorPatternWithSize:(CGSize)size
                          stepSize:(CGSize)stepSize
                      tilingMethod:(CGPatternTiling)tileMethod
-                  andDrawingBlock:(void (^)(CGContextRef c))drawBlock;
+                  andDrawingBlock:(void (^)(CGRect bounds, CGContextRef c))drawBlock;
 
 @end

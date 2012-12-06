@@ -24,35 +24,44 @@
 //
 
 #import "UIColor+BlockPattern.h"
+typedef struct {
+    CGRect patternBounds;
+    void *block;
+} KMDrawInfo;
 
 void drawPatternUsingBlock(void *info, CGContextRef c)
 {
-    void (^drawBlock)(CGContextRef c) = NULL;
+    void (^drawBlock)(CGRect bounds, CGContextRef c) = NULL;
+    KMDrawInfo *drawInfo = (KMDrawInfo *)info;
     
 #if __has_feature(objc_arc)
-    drawBlock = (__bridge void (^)(CGContextRef))(info);
+    drawBlock = (__bridge void (^)(CGRect, CGContextRef))(drawInfo->block);
 #else
-    drawBlock = (void (^)(CGContextRef))(info);
+    drawBlock = (void (^)(CGRect, CGContextRef))(drawInfo->block);
 #endif
-    
     if (drawBlock != NULL)
     {
-        drawBlock(c);
+        drawBlock(drawInfo->patternBounds, c);
     }
 }
 
 void drawPatternUsingBlockRelease(void *info)
 {
-    if (info != NULL)
+    KMDrawInfo *drawInfo = (KMDrawInfo *)info;
+    if (drawInfo != NULL)
     {
-        CFRelease(info);
+        if (drawInfo->block != NULL)
+        {
+            CFRelease(drawInfo->block);
+        }
+        free(drawInfo);
     }
 }
 
 
 @implementation UIColor (BlockPattern)
 
-+ (UIColor *)colorPatternWithSize:(CGSize)size andDrawingBlock:(void (^)(CGContextRef c))drawBlock
++ (UIColor *)colorPatternWithSize:(CGSize)size andDrawingBlock:(void (^)(CGRect bounds, CGContextRef c))drawBlock
 {
     return [self colorPatternWithSize:size
                              stepSize:size
@@ -63,9 +72,13 @@ void drawPatternUsingBlockRelease(void *info)
 + (UIColor *)colorPatternWithSize:(CGSize)size
                          stepSize:(CGSize)stepSize
                      tilingMethod:(CGPatternTiling)tileMethod
-                  andDrawingBlock:(void (^)(CGContextRef c))drawBlock
+                  andDrawingBlock:(void (^)(CGRect bounds, CGContextRef c))drawBlock
 {
-    void *infoBlock = NULL;
+    if (drawBlock == nil)
+    {
+        return nil;
+    }
+
     CGPatternCallbacks patternCallbacks;
     patternCallbacks.version = 0;
     patternCallbacks.drawPattern = drawPatternUsingBlock;
@@ -74,15 +87,22 @@ void drawPatternUsingBlockRelease(void *info)
     CGRect patternRect = CGRectZero;
     patternRect.size = size;
     
+    KMDrawInfo *drawInfo = malloc(sizeof(KMDrawInfo));
+    if (drawInfo == NULL)
+    {
+        return nil;
+    }
+    
+    drawInfo->patternBounds = patternRect;
     // with arc on or off we are taking ownership
     // of this block, it will be released in the releaseInfo callback
 #if __has_feature(objc_arc)
-    infoBlock = (void *)CFBridgingRetain(drawBlock);
+    drawInfo->block = (void *)CFBridgingRetain(drawBlock);
 #else
-    infoBlock = (void *)CFRetain(drawBlock);
+    drawInfo->block = (void *)CFRetain(drawBlock);
 #endif
     
-    CGPatternRef pattern = CGPatternCreate(infoBlock, patternRect, CGAffineTransformIdentity, stepSize.width, stepSize.height, tileMethod, true, &patternCallbacks);
+    CGPatternRef pattern = CGPatternCreate(drawInfo, patternRect, CGAffineTransformIdentity, stepSize.width, stepSize.height, tileMethod, true, &patternCallbacks);
     CGColorSpaceRef patternColorSpace = CGColorSpaceCreatePattern(NULL);
     CGColorRef patColor = CGColorCreateWithPattern(patternColorSpace, pattern, (CGFloat []){1.0});
     

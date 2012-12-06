@@ -114,7 +114,7 @@
     {
         CGRect patternFrame = CGRectMake(0.0, 0.0, 20.0, 20.0);
 
-        backgroundColor = [UIColor colorPatternWithSize:patternFrame.size andDrawingBlock:[[^(CGContextRef c) {
+        backgroundColor = [UIColor colorPatternWithSize:patternFrame.size andDrawingBlock:[[^(CGRect bnds, CGContextRef c) {
             CGContextSetFillColorWithColor(c, [[UIColor whiteColor] CGColor]);
             CGContextFillRect(c, patternFrame);
             CGContextSetFillColorWithColor(c, [[UIColor redColor] CGColor]);
@@ -125,14 +125,14 @@
     }
     else if([selectedText isEqualToString:BG_RedCircles])
     {
-        backgroundColor = [UIColor colorPatternWithSize:CGSizeMake(20.0, 20.0) andDrawingBlock:^(CGContextRef c) {
+        backgroundColor = [UIColor colorPatternWithSize:CGSizeMake(20.0, 20.0) andDrawingBlock:^(CGRect bnds, CGContextRef c) {
             CGContextSetFillColorWithColor(c, [[UIColor redColor] CGColor]);
-            CGContextFillEllipseInRect(c, CGRectMake(0.0, 0.0, 20.0, 20.0));
+            CGContextFillEllipseInRect(c, bnds);
         }];
     }
     else if ([selectedText isEqualToString:BG_VerticalStripes])
     {
-        backgroundColor = [UIColor colorPatternWithSize:CGSizeMake(8.0,1.0) andDrawingBlock:^(CGContextRef c) {
+        backgroundColor = [UIColor colorPatternWithSize:CGSizeMake(8.0,1.0) andDrawingBlock:^(CGRect bnds, CGContextRef c) {
             CGContextSetFillColorWithColor(c, [[UIColor colorWithRed:212/255.0 green:217/255.0 blue:226/255.0 alpha:1.0] CGColor]);
             CGContextFillRect(c, CGRectMake(0.0, 0.0, 8.0, 1.0));
             CGContextSetFillColorWithColor(c, [[UIColor colorWithRed:209/255.0 green:213/255.0 blue:223/255.0 alpha:1.0] CGColor]);
