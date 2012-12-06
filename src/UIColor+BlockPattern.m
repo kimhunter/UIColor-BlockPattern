@@ -74,6 +74,11 @@ void drawPatternUsingBlockRelease(void *info)
                      tilingMethod:(CGPatternTiling)tileMethod
                   andDrawingBlock:(void (^)(CGRect bounds, CGContextRef c))drawBlock
 {
+    if (drawBlock == nil)
+    {
+        return nil;
+    }
+
     CGPatternCallbacks patternCallbacks;
     patternCallbacks.version = 0;
     patternCallbacks.drawPattern = drawPatternUsingBlock;
