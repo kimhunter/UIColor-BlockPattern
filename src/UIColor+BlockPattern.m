@@ -37,7 +37,7 @@ void drawPatternUsingBlock(void *info, CGContextRef c)
 #if __has_feature(objc_arc)
     drawBlock = (__bridge void (^)(CGRect, CGContextRef))(drawInfo->block);
 #else
-    drawBlock = (void (^)(CGContextRef))(drawInfo->block);
+    drawBlock = (void (^)(CGRect, CGContextRef))(drawInfo->block);
 #endif
     if (drawBlock != NULL)
     {
