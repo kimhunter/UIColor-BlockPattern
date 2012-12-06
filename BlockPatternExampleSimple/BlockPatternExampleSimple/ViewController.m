@@ -18,15 +18,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    CGRect pattBound = CGRectMake(0.0, 0.0, 40.0, 40.0);
-    self.view.backgroundColor = [UIColor colorPatternWithSize:pattBound.size andDrawingBlock:[[^(CGContextRef c) {
+    self.view.backgroundColor = [UIColor colorPatternWithSize:CGSizeMake(40.0, 40.0) andDrawingBlock:[[^(CGRect bnds, CGContextRef c) {
 
         CGContextSetFillColorWithColor(c, [[UIColor whiteColor] CGColor]);
-        CGContextFillRect(c, pattBound);
+        CGContextFillRect(c, bnds);
         
         // half the width of the first ellipse, then translate the 2nd over the width of the first
-        CGRect firstEllipseRect = CGRectApplyAffineTransform(pattBound, CGAffineTransformMakeScale(0.5, 1.0));
+        CGRect firstEllipseRect = CGRectApplyAffineTransform(bnds, CGAffineTransformMakeScale(0.5, 1.0));
         CGRect secndEllipseRect = CGRectApplyAffineTransform(firstEllipseRect, CGAffineTransformMakeTranslation(firstEllipseRect.size.width, 0.0));
         
         CGContextSetFillColorWithColor(c, [[UIColor darkGrayColor] CGColor]);
