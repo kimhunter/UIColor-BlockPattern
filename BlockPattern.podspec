@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = 'BlockPattern'
-  s.version  = '1.0'
+  s.version  = '1.1'
   s.license  = 'MIT'
   s.summary  = 'Draw UIColor Patterns with Blocks'
   s.homepage = 'https://github.com/bigkm/UIColor-BlockPattern'
