@@ -52,7 +52,7 @@ void drawPatternUsingBlockRelease(void *info)
     {
         if (drawInfo->block != NULL)
         {
-            CFRelease(drawInfo->block);
+            Block_release(drawInfo->block);
         }
         free(drawInfo);
     }
@@ -92,14 +92,15 @@ void drawPatternUsingBlockRelease(void *info)
     {
         return nil;
     }
-    
+	
     drawInfo->patternBounds = patternRect;
-    // with arc on or off we are taking ownership
-    // of this block, it will be released in the releaseInfo callback
+    
+    // block memory managemant
 #if __has_feature(objc_arc)
-    drawInfo->block = (void *)CFBridgingRetain(drawBlock);
+    void *blk = (__bridge void *)(drawBlock);
+    drawInfo->block = Block_copy(blk);
 #else
-    drawInfo->block = (void *)CFRetain(drawBlock);
+    drawInfo->block = (void *)Block_copy(drawBlock);
 #endif
     
     CGPatternRef pattern = CGPatternCreate(drawInfo, patternRect, CGAffineTransformIdentity, stepSize.width, stepSize.height, tileMethod, true, &patternCallbacks);
