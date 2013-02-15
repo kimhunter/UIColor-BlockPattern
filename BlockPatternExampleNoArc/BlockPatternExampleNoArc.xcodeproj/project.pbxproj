@@ -47,8 +47,8 @@
 		3B1BEBF7164F7229008C8F9A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/KMMasterViewController_iPad.xib; sourceTree = "<group>"; };
 		3B1BEBFA164F7229008C8F9A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/KMDetailViewController_iPhone.xib; sourceTree = "<group>"; };
 		3B1BEBFD164F7229008C8F9A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/KMDetailViewController_iPad.xib; sourceTree = "<group>"; };
-		3B48D175164F726100D64FB5 /* UIColor+BlockPattern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+BlockPattern.h"; sourceTree = "<group>"; };
-		3B48D176164F726100D64FB5 /* UIColor+BlockPattern.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+BlockPattern.m"; sourceTree = "<group>"; };
+		3B48D175164F726100D64FB5 /* UIColor+BlockPattern.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+BlockPattern.h"; sourceTree = "<group>"; usesTabs = 0; };
+		3B48D176164F726100D64FB5 /* UIColor+BlockPattern.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+BlockPattern.m"; sourceTree = "<group>"; usesTabs = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
