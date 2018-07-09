@@ -20,7 +20,7 @@ This Extension plays well with or without ARC.
 
 How to use
 --------------
-Simply you could just copy the class in /src into your project. Or if you use kitspec or cocoapods, these will work to.
+Simply you could just copy the class in `/src` into your project. Or if you use kitspec or cocoapods, these will work to.
 
 Example Code
 ---------------------
